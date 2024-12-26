@@ -1,0 +1,21 @@
+# Node.js / Next.js
+frontend/node_modules
+frontend/.next
+frontend/out
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.production.local
+
+# Python / FastAPI
+backend/__pycache__
+backend/venv/
+backend/.env
+backend/*.pyc
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Altri file temporanei
+*.log
+*.tmp
