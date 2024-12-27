@@ -179,7 +179,11 @@ export function AppSidebar({ ...props }) {
   const [ideas, setIdeas] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [navMain, setNavMain] = useState([]);
-
+  const handleIdeaSelection = (idea) => {
+    // Usa il router per passare alla pagina dashboard con lo stato dell'idea
+    router.push(`/dashboard?selectedIdea=${encodeURIComponent(idea.title)}`);
+  };
+  
   // Caricamento delle categorie
   useEffect(() => {
     const token = localStorage.getItem("access_token");
@@ -201,34 +205,35 @@ export function AppSidebar({ ...props }) {
         setUser(data);
       })
       .catch((err) => console.error(err));
-
-      fetch("http://127.0.0.1:8000/categories-with-ideas", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+  
+    // Recupera le categorie con idee
+    fetch("http://127.0.0.1:8000/categories-with-ideas", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Errore nel recupero delle categorie con idee");
+        }
+        return response.json();
       })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Errore nel recupero delle categorie con idee");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          const formattedNavMain = data.map((category) => ({
-            title: category.title,
-            url: "#",
-            icon: getIconComponent(category.icon), // Ottieni il componente dell'icona
-            items: category.items.map((item, index) => ({
-              title: `${index + 1} - ${item.title}`,
-              url: `/idea/${slugify(category.title)}/${slugify(item.title)}`, // Link alla pagina dettaglio idea
-            })),
-          }));
-      
-          setNavMain(formattedNavMain);
-        })
-        .catch((err) => console.error(err));
-      
+      .then((data) => {
+        const formattedNavMain = data.map((category) => ({
+          title: category.title,
+          icon: getIconComponent(category.icon),
+          items: category.items.map((item, index) => ({
+            title: `${index + 1} - ${item.title}`,
+            url: `/dashboard/${category.title}/${item.title}`, // Non codificare qui
+          })),
+        }));
+        
+  
+        setNavMain(formattedNavMain);
+      })
+      .catch((err) => console.error(err));
   }, []);
+  
 
   return (
     <Sidebar collapsible="icon" {...props}>
