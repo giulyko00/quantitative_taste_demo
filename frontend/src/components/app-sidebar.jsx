@@ -13,7 +13,8 @@ import {
   Settings2,
   SquareTerminal,
 } from "lucide-react"
-
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { NavMain } from "@/components/nav-main"
 import { NavProjects } from "@/components/nav-projects"
 import { NavUser } from "@/components/nav-user"
@@ -25,6 +26,8 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
+
+
 
 // This is sample data.
 const data = {
@@ -159,13 +162,49 @@ const data = {
 export function AppSidebar({
   ...props
 }) {
+  const router = useRouter();
+  const [categories, setCategories] = useState([]);
+  const [ideas, setIdeas] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [navMain, setNavMain] = useState([]);
+
+
+  // Caricamento delle categorie
+  useEffect(() => {
+    const token = localStorage.getItem("access_token");
+    if (!token) return;
+
+    fetch("http://127.0.0.1:8000/categories-with-ideas", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Errore nel recupero delle categorie con idee");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        // Trasformazione per compatibilità con `NavMain`
+        const formattedNavMain = data.map((category) => ({
+          title: category.title,
+          url: "#", // Non usato in questo caso
+          icon: null, // Puoi assegnare un'icona specifica per ogni categoria
+          items: category.items,
+        }));
+
+        setNavMain(formattedNavMain);
+      })
+      .catch((err) => console.error(err));
+  }, []);
   return (
     (<Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain items={navMain} />
         <NavProjects projects={data.projects} />
       </SidebarContent>
       <SidebarFooter>

@@ -277,3 +277,19 @@ def get_ideas_by_category(category: str) -> List[Dict]:
     if category not in ideas_data:
         raise HTTPException(status_code=404, detail="Categoria non trovata.")
     return ideas_data[category]
+
+@app.get("/categories-with-ideas")
+def get_categories_with_ideas() -> List[Dict]:
+    """
+    Restituisce le categorie con le relative idee in una struttura nidificata.
+    """
+    return [
+        {
+            "title": category,
+            "items": [
+                {"title": idea["name"], "url": idea["chartLink"]}
+                for idea in ideas
+            ],
+        }
+        for category, ideas in ideas_data.items()
+    ]
