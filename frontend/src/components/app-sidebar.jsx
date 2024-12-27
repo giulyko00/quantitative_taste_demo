@@ -173,7 +173,7 @@ export function AppSidebar({
   useEffect(() => {
     const token = localStorage.getItem("access_token");
     if (!token) return;
-
+  
     fetch("http://127.0.0.1:8000/categories-with-ideas", {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -191,13 +191,17 @@ export function AppSidebar({
           title: category.title,
           url: "#", // Non usato in questo caso
           icon: null, // Puoi assegnare un'icona specifica per ogni categoria
-          items: category.items,
+          items: category.items.map((item, index) => ({
+            title: `${index + 1} - ${item.title}`, // Aggiungi il numero d'ordine e il trattino
+            url: item.url, // Mantieni l'URL esistente
+          })),
         }));
-
+  
         setNavMain(formattedNavMain);
       })
       .catch((err) => console.error(err));
   }, []);
+  
   return (
     (<Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
