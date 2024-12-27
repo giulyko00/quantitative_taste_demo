@@ -14,7 +14,7 @@ export default function Dashboard() {
     const token = localStorage.getItem("access_token");
     if (!token) {
       // Se non c'è token, reindirizza al login
-      router.push("/login"); // Assicurati che il percorso sia corretto
+      router.push("/"); // Assicurati che il percorso sia corretto
       return;
     }
 
@@ -35,7 +35,7 @@ export default function Dashboard() {
       })
       .catch((err) => {
         console.error(err);
-        router.push("/login"); // Reindirizza in caso di errore
+        router.push("/"); // Reindirizza in caso di errore
       });
   }, [router]);
 
