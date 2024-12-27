@@ -6,8 +6,14 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Toaster } from "@/components/ui/toaster";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import {
+  SidebarProvider,
+  SidebarInset,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
+import { Separator } from "@/components/ui/separator";
+import { LogoutButton } from "@/components/logout-button"; // Importa LogoutButton
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,7 +29,7 @@ export default function RootLayout({ children }) {
   const pathname = usePathname();
 
   // Rotte dove non vogliamo mostrare la sidebar
-  const noSidebarRoutes = ["/", ];
+  const noSidebarRoutes = ["/"];
 
   const showSidebar = !noSidebarRoutes.includes(pathname);
 
@@ -40,12 +46,23 @@ export default function RootLayout({ children }) {
         <ThemeProvider>
           {showSidebar ? (
             <SidebarProvider>
-              <header className="flex justify-between items-center p-4">
-                <SidebarTrigger />
-                <ThemeToggle />
-              </header>
+              {/* Sidebar principale */}
               <AppSidebar />
-              <main className="p-6 md:p-10">{children}</main>
+              {/* Sidebar con header e contenuto principale */}
+              <SidebarInset>
+                <header className="flex h-16 shrink-0 items-center justify-between border-b px-4 ">
+
+                  {/* Separator */}
+                  <Separator orientation="vertical" className="h-6 bg-gray-600 mx-4" />
+
+                  {/* Pulsanti Logout e ThemeToggle */}
+                  <div className="flex items-center space-x-4">
+                    <ThemeToggle />
+                    <LogoutButton />
+                  </div>
+                </header>
+                <main className="p-6 md:p-10">{children}</main>
+              </SidebarInset>
             </SidebarProvider>
           ) : (
             <main className="flex min-h-screen items-center justify-center">

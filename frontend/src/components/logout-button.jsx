@@ -9,11 +9,11 @@ export function LogoutButton() {
 
   const handleLogout = () => {
     localStorage.removeItem("access_token");
-    router.push("/login");
+    router.push("/");
   };
 
   return (
-    <Button onClick={handleLogout} className="mt-4">
+    <Button onClick={handleLogout} className="">
       Logout
     </Button>
   );
