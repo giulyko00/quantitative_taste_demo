@@ -14,6 +14,8 @@ import {
 import { AppSidebar } from "@/components/app-sidebar";
 import { Separator } from "@/components/ui/separator";
 import { LogoutButton } from "@/components/logout-button"; // Importa LogoutButton
+import { CategoriesProvider } from "@/context/CategoriesContext"; // Importa il CategoriesProvider
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -44,6 +46,7 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider>
+        <CategoriesProvider> 
           {showSidebar ? (
             <SidebarProvider>
               {/* Sidebar principale */}
@@ -70,6 +73,7 @@ export default function RootLayout({ children }) {
             </main>
           )}
           <Toaster />
+          </CategoriesProvider>
         </ThemeProvider>
       </body>
     </html>

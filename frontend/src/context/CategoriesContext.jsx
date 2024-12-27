@@ -11,6 +11,7 @@ export const CategoriesProvider = ({ children }) => {
   const [categories, setCategories] = useState([]); // Lista delle categorie
   const [selectedCategory, setSelectedCategory] = useState(null); // Categoria selezionata
   const [ideas, setIdeas] = useState([]); // Idee di investimento
+  const [message, setMessage] = useState(""); // Messaggio di benvenuto
 
   return (
     <CategoriesContext.Provider
@@ -21,6 +22,8 @@ export const CategoriesProvider = ({ children }) => {
         setSelectedCategory,
         ideas,
         setIdeas,
+        message,
+        setMessage,
       }}
     >
       {children}

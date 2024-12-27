@@ -333,3 +333,19 @@ def get_categories_with_ideas() -> List[Dict]:
         }
         for category, ideas in ideas_data.items()
     ]
+
+# Aggiungi questo endpoint al tuo main.py
+
+@app.get("/ideas/{category}/{idea_name}")
+def get_idea_detail(category: str, idea_name: str) -> Dict:
+    if category not in ideas_data:
+        raise HTTPException(status_code=404, detail="Categoria non trovata.")
+    
+    # Slugify per confrontare correttamente
+    def slugify(text):
+        return text.lower().replace(" ", "-").replace(".", "").replace(",", "")
+    
+    for idea in ideas_data[category]:
+        if slugify(idea["name"]) == idea_name.lower():
+            return idea
+    raise HTTPException(status_code=404, detail="Idea non trovata.")

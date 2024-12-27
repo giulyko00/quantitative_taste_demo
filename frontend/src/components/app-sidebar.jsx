@@ -1,6 +1,7 @@
-"use client"
+// frontend/components/app-sidebar.jsx
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   AudioWaveform,
   BookOpen,
@@ -14,20 +15,21 @@ import {
   Settings2,
   SquareTerminal,
   Bitcoin,  
-} from "lucide-react"
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { NavMain } from "@/components/nav-main"
-import { NavProjects } from "@/components/nav-projects"
-import { NavUser } from "@/components/nav-user"
-import { TeamSwitcher } from "@/components/team-switcher"
+import { NavMain } from "@/components/nav-main";
+import { NavProjects } from "@/components/nav-projects";
+import { NavUser } from "@/components/nav-user";
+import { TeamSwitcher } from "@/components/team-switcher";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
+import { slugify } from "@/lib/slugify"; // Importa la funzione slugify
 
 const icons = {
   Bot,
@@ -167,11 +169,9 @@ const data = {
       icon: Map,
     },
   ],
-}
+};
 
-export function AppSidebar({
-  ...props
-}) {
+export function AppSidebar({ ...props }) {
   const router = useRouter();
   const [user, setUser] = useState({ name: "", email: "" });
 
@@ -179,7 +179,6 @@ export function AppSidebar({
   const [ideas, setIdeas] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [navMain, setNavMain] = useState([]);
-
 
   // Caricamento delle categorie
   useEffect(() => {
@@ -221,7 +220,7 @@ export function AppSidebar({
             icon: getIconComponent(category.icon), // Ottieni il componente dell'icona
             items: category.items.map((item, index) => ({
               title: `${index + 1} - ${item.title}`,
-              url: item.url,
+              url: `/idea/${slugify(category.title)}/${slugify(item.title)}`, // Link alla pagina dettaglio idea
             })),
           }));
       
@@ -230,9 +229,9 @@ export function AppSidebar({
         .catch((err) => console.error(err));
       
   }, []);
-  
+
   return (
-    (<Sidebar collapsible="icon" {...props}>
+    <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
@@ -244,6 +243,6 @@ export function AppSidebar({
         <NavUser user={user} />
       </SidebarFooter>
       <SidebarRail />
-    </Sidebar>)
+    </Sidebar>
   );
 }
