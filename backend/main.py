@@ -104,6 +104,13 @@ categories_data = [
     "Aziende Blockchain"
 ]
 
+category_icons = {
+    "Aziende AI": "Bot",
+    "Energia Rinnovabile": "Leaf",
+    "Aziende Blockchain": "Bitcoin",
+}
+
+
 ideas_data = {
     "Aziende AI": [
         {
@@ -313,11 +320,12 @@ def get_ideas_by_category(category: str) -> List[Dict]:
 @app.get("/categories-with-ideas")
 def get_categories_with_ideas() -> List[Dict]:
     """
-    Restituisce le categorie con le relative idee in una struttura nidificata.
+    Restituisce le categorie con le relative idee e icone in una struttura nidificata.
     """
     return [
         {
             "title": category,
+            "icon": category_icons.get(category, "BookOpen"),  # Default icon if not found
             "items": [
                 {"title": idea["name"], "url": idea["chartLink"]}
                 for idea in ideas

@@ -10,8 +10,10 @@ import {
   ChartCandlestick,
   Map,
   PieChart,
+  Leaf,
   Settings2,
   SquareTerminal,
+  Bitcoin,  
 } from "lucide-react"
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -27,7 +29,15 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 
+const icons = {
+  Bot,
+  Leaf,
+  SquareTerminal,
+  Bitcoin,
+  BookOpen, // Default icon
+};
 
+const getIconComponent = (iconName) => icons[iconName] || icons["BookOpen"];
 
 // This is sample data.
 const data = {
@@ -193,32 +203,32 @@ export function AppSidebar({
       })
       .catch((err) => console.error(err));
 
-    fetch("http://127.0.0.1:8000/categories-with-ideas", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Errore nel recupero delle categorie con idee");
-        }
-        return response.json();
+      fetch("http://127.0.0.1:8000/categories-with-ideas", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
-      .then((data) => {
-        // Trasformazione per compatibilità con `NavMain`
-        const formattedNavMain = data.map((category) => ({
-          title: category.title,
-          url: "#", // Non usato in questo caso
-          icon: null, // Puoi assegnare un'icona specifica per ogni categoria
-          items: category.items.map((item, index) => ({
-            title: `${index + 1} - ${item.title}`, // Aggiungi il numero d'ordine e il trattino
-            url: item.url, // Mantieni l'URL esistente
-          })),
-        }));
-  
-        setNavMain(formattedNavMain);
-      })
-      .catch((err) => console.error(err));
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Errore nel recupero delle categorie con idee");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          const formattedNavMain = data.map((category) => ({
+            title: category.title,
+            url: "#",
+            icon: getIconComponent(category.icon), // Ottieni il componente dell'icona
+            items: category.items.map((item, index) => ({
+              title: `${index + 1} - ${item.title}`,
+              url: item.url,
+            })),
+          }));
+      
+          setNavMain(formattedNavMain);
+        })
+        .catch((err) => console.error(err));
+      
   }, []);
   
   return (
