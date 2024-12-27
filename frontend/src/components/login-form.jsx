@@ -1,4 +1,3 @@
-// frontend/components/login-form.jsx
 "use client";
 
 import { useState } from "react";
@@ -14,23 +13,19 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useTheme } from "@/components/theme-provider"; // Importa il context
 
-export function LoginForm({
-  className,
-  ...props
-}) {
+export function LoginForm({ className, ...props }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const router = useRouter();
-  const { theme } = useTheme(); // Usa il contesto del tema
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg(""); // Resetta il messaggio di errore
 
     try {
+      // Effettua la chiamata al backend per il login
       const response = await fetch("http://127.0.0.1:8000/login", {
         method: "POST",
         headers: {
@@ -50,7 +45,25 @@ export function LoginForm({
       // Salva il token in localStorage
       localStorage.setItem("access_token", data.access_token);
 
-      // Reindirizza l'utente a una pagina protetta, ad esempio /dashboard
+      // Recupera i dettagli utente
+      const userResponse = await fetch("http://127.0.0.1:8000/user/me", {
+        headers: {
+          Authorization: `Bearer ${data.access_token}`,
+        },
+      });
+
+      if (!userResponse.ok) {
+        throw new Error("Errore nel recupero dei dettagli utente");
+      }
+
+      const userData = await userResponse.json();
+      console.log("User data:", userData);
+
+      // Salva i dettagli dell'utente nel localStorage (opzionale)
+      localStorage.setItem("user_name", userData.name);
+      localStorage.setItem("user_email", userData.email);
+
+      // Reindirizza l'utente alla dashboard
       router.push("/dashboard");
     } catch (error) {
       console.error("Login error:", error);
@@ -86,7 +99,8 @@ export function LoginForm({
                   <Label htmlFor="password">Password</Label>
                   <a
                     href="#"
-                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline">
+                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
+                  >
                     Forgot your password?
                   </a>
                 </div>

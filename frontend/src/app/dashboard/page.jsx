@@ -23,7 +23,7 @@ export default function Dashboard() {
   useEffect(() => {
     const token = localStorage.getItem("access_token");
     if (!token) {
-      // Se non c'è token, reindirizza al login
+      // Se non c'è token, reindirizza al 
       router.push("/"); // Assicurati che il percorso sia corretto
       return;
     }
@@ -76,7 +76,7 @@ export default function Dashboard() {
     setSelectedCategory(category);
     const token = localStorage.getItem("access_token");
     if (!token) {
-      router.push("/login"); 
+      router.push("/"); 
       return;
     }
 
@@ -165,8 +165,6 @@ export default function Dashboard() {
         </div>
       )}
 
-      {/* Pulsante di Logout */}
-      <LogoutButton />
     </main>
   );
 }

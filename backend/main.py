@@ -1,50 +1,80 @@
 from fastapi import FastAPI, HTTPException, Depends, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-import jwt
-import time
 from typing import List, Dict
+from sqlalchemy import Column, Integer, String, create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+import jwt
 
 
+# Configura il database
+DATABASE_URL = "sqlite:///./test.db"  # Usa SQLite per semplicità
+engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+Base = declarative_base()
+
+# Modello utente
+class User(Base):
+    __tablename__ = "users"
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String, unique=True, index=True)
+    password = Column(String)
+    name = Column(String)
+
+Base.metadata.create_all(bind=engine)
+
+# Dipendenza di database
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+# App FastAPI
 app = FastAPI()
 
-# Configura CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-        "http://localhost:3001",  # Aggiungi questa riga
-        "http://127.0.0.1:3001"   # Aggiungi questa riga
-    ],
+    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Mock di "credenziali" di un utente
-MOCK_USER_EMAIL = "test@example.com"
-MOCK_USER_PASSWORD = "12345"
-
-# Chiave segreta per firmare il JWT (in un progetto reale, tienila in .env)
-SECRET_KEY = "MY_SUPER_SECRET_KEY"
-ALGORITHM = "HS256"
-
+# Modello per richieste di login
 class LoginRequest(BaseModel):
     email: str
     password: str
 
+# Endpoint per il login
 @app.post("/login")
-def login(req: LoginRequest):
-    if req.email == MOCK_USER_EMAIL and req.password == MOCK_USER_PASSWORD:
-        payload = {
-            "sub": req.email,
-            "exp": int(time.time()) + 3600  # Scadenza tra 1 ora
-        }
-        token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
-        return {"access_token": token}
-    else:
+def login(req: LoginRequest, db: SessionLocal = Depends(get_db)):
+    user = db.query(User).filter(User.email == req.email).first()
+    if not user or user.password != req.password:
         raise HTTPException(status_code=401, detail="Credenziali non valide")
+
+    # Genera token JWT
+    payload = {"sub": user.email, "name": user.name}
+    token = jwt.encode(payload, "MY_SUPER_SECRET_KEY", algorithm="HS256")
+    return {"access_token": token}
+
+# Endpoint per recuperare i dettagli utente
+@app.get("/user/me")
+def get_user(request: Request):
+    auth_header = request.headers.get("Authorization")
+    if not auth_header:
+        raise HTTPException(status_code=401, detail="Authorization header missing")
+    scheme, _, token = auth_header.partition(" ")
+    if scheme.lower() != "bearer":
+        raise HTTPException(status_code=401, detail="Invalid auth scheme")
+
+    try:
+        decoded = jwt.decode(token, "MY_SUPER_SECRET_KEY", algorithms=["HS256"])
+        return {"email": decoded["sub"], "name": decoded["name"]}
+    except jwt.InvalidTokenError:
+        raise HTTPException(status_code=401, detail="Token non valido")
 
 @app.get("/protected")
 def protected_route(request: Request):
@@ -57,13 +87,15 @@ def protected_route(request: Request):
         raise HTTPException(status_code=401, detail="Invalid auth scheme")
 
     try:
-        decoded = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        decoded = jwt.decode(token, "MY_SUPER_SECRET_KEY", algorithms=["HS256"])
+        print(f"Decoded token: {decoded}")  # Aggiungi logging
     except jwt.ExpiredSignatureError:
         raise HTTPException(status_code=401, detail="Token scaduto")
     except jwt.InvalidTokenError:
         raise HTTPException(status_code=401, detail="Token non valido")
 
     return {"message": f"Benvenuto utente {decoded['sub']}"}
+
 
 # Mock di dati
 categories_data = [

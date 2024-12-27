@@ -163,6 +163,8 @@ export function AppSidebar({
   ...props
 }) {
   const router = useRouter();
+  const [user, setUser] = useState({ name: "", email: "" });
+
   const [categories, setCategories] = useState([]);
   const [ideas, setIdeas] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -174,6 +176,23 @@ export function AppSidebar({
     const token = localStorage.getItem("access_token");
     if (!token) return;
   
+    // Recupera i dati utente
+    fetch("http://127.0.0.1:8000/user/me", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Errore nel recupero dei dati utente");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setUser(data);
+      })
+      .catch((err) => console.error(err));
+
     fetch("http://127.0.0.1:8000/categories-with-ideas", {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -212,7 +231,7 @@ export function AppSidebar({
         <NavProjects projects={data.projects} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>)
