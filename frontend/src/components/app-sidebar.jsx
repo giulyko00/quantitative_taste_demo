@@ -7,7 +7,7 @@ import {
   Bot,
   Command,
   Frame,
-  GalleryVerticalEnd,
+  ChartCandlestick,
   Map,
   PieChart,
   Settings2,
@@ -35,9 +35,9 @@ const data = {
   },
   teams: [
     {
-      name: "Acme Inc",
-      logo: GalleryVerticalEnd,
-      plan: "Enterprise",
+      name: "Quantaste DEMO",
+      logo: ChartCandlestick,
+      plan: "Premium Plan",
     },
     {
       name: "Acme Corp.",

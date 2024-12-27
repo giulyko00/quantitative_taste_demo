@@ -24,7 +24,7 @@ export default function Dashboard() {
     const token = localStorage.getItem("access_token");
     if (!token) {
       // Se non c'è token, reindirizza al login
-      router.push("/login"); // Assicurati che il percorso sia corretto
+      router.push("/"); // Assicurati che il percorso sia corretto
       return;
     }
 
@@ -45,14 +45,14 @@ export default function Dashboard() {
       })
       .catch((err) => {
         console.error(err);
-        router.push("/login"); // Reindirizza in caso di errore
+        router.push("/"); // Reindirizza in caso di errore
       });
   }, [router]);
 
   // Fetch delle categorie al primo caricamento
   useEffect(() => {
     const token = localStorage.getItem("access_token");
-    if (!token) return; 
+    if (!token) return; // Evita di fare fetch se non c'è token
 
     fetch("http://127.0.0.1:8000/categories", {
       headers: {
@@ -66,11 +66,7 @@ export default function Dashboard() {
         return response.json();
       })
       .then((data) => {
-        const categorizedData = data.map((category) => ({
-          title: category,
-          icon: categoryIcons[category] || BookOpen, // Usa una icona di default se non trovata
-        }));
-        setCategories(categorizedData);
+        setCategories(data);
       })
       .catch((err) => console.log(err));
   }, []);
