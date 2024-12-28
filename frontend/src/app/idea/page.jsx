@@ -69,10 +69,8 @@ export default function Idea() {
 
   // 2. Quando ideaDetails è disponibile, chiama Alpha Vantage per i dati finanziari
   useEffect(() => {
-    // Se non c'è un simbolo da caricare, fermati
     if (!ideaDetails?.symbol) return;
   
-    // Esempio di rimozione prefisso con split:
     const alphaSymbol = ideaDetails.symbol.split(":").pop(); 
   
     const fetchStockData = async () => {
@@ -90,8 +88,9 @@ export default function Idea() {
   
         const price = globalQuote["05. price"];
         const changePercent = globalQuote["10. change percent"];
+        const volume = globalQuote["06. volume"];
   
-        setFinancialData({ price, changePercent });
+        setFinancialData({ price, changePercent, volume });
         setError(null);
       } catch (err) {
         console.error(err);
@@ -102,6 +101,7 @@ export default function Idea() {
   
     fetchStockData();
   }, [ideaDetails, ALPHA_VANTAGE_API_KEY]);
+  
   
 
   return (
@@ -120,23 +120,27 @@ export default function Idea() {
                      bg-white dark:bg-gray-900 
                      border-gray-300 dark:border-gray-700"
         >
-          {/* BOX IN ALTO A DESTRA PER I DATI FINANZIARI */}
-          {financialData && (
-            <div className="absolute top-4 right-4 bg-gray-100 dark:bg-gray-800 p-3 rounded shadow-sm">
-              <p className="text-sm text-gray-700 dark:text-gray-300">
-                <strong>Prezzo:</strong> {financialData.price} USD
-              </p>
-              <p
-                className={`text-sm ${
-                  financialData.changePercent?.startsWith("-")
-                    ? "text-red-600 dark:text-red-400"
-                    : "text-green-600 dark:text-green-400"
-                }`}
-              >
-                <strong>Variazione:</strong> {financialData.changePercent}
-              </p>
-            </div>
-          )}
+{/* BOX IN ALTO A DESTRA PER I DATI FINANZIARI */}
+{financialData && (
+  <div className="absolute top-8 right-8 bg-gray-100 dark:bg-gray-800 p-8 rounded-xl shadow-lg w-80 space-y-4">
+    <p className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+      <strong>Prezzo:</strong> {financialData.price} USD
+    </p>
+    <p
+      className={`text-lg font-semibold ${
+        financialData.changePercent?.startsWith("-")
+          ? "text-red-600 dark:text-red-400"
+          : "text-green-600 dark:text-green-400"
+      }`}
+    >
+      <strong>Variazione:</strong> {financialData.changePercent}
+    </p>
+    <p className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+      <strong>Volume:</strong> {financialData.volume}
+    </p>
+  </div>
+)}
+
 
           {/* In caso di errori, li mostriamo */}
           {error && (
@@ -177,7 +181,7 @@ export default function Idea() {
         </div>
       ) : (
         <div className="text-center text-gray-500 dark:text-gray-400">
-          <p>Seleziona un'idea dalla sidebar per vedere i dettagli.</p>
+          <p>Caricamento dei dati in corso...</p>
         </div>
       )}
     </main>
