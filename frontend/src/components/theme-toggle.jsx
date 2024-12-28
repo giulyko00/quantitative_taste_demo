@@ -1,7 +1,7 @@
 // components/theme-toggle.jsx
 "use client";
 
-import { useTheme } from "@/components/theme-provider";
+import { useTheme } from "next-themes"
 import { Button } from "@/components/ui/button";
 import { Sun, Moon } from "lucide-react"; // Utilizza icone per indicare il tema
 

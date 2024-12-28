@@ -6,7 +6,7 @@ import TradingViewWidget from "@/components/TradingViewWidget";
 import { MonthlyPerformanceChart } from "@/components/MonthlyPerformanceChart";
 import { ArticlePreviewCard } from "@/components/ArticlePreviewCard";
 import { useCategories } from "@/context/CategoriesContext";
-import { useTheme } from "@/components/theme-provider";
+import { useTheme } from "next-themes";
 
 export default function Idea() {
   const { theme } = useTheme();

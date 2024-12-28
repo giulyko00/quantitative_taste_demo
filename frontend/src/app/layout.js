@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider as NextThemesProvider } from "next-themes"
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Toaster } from "@/components/ui/toaster";
 import {
@@ -44,7 +44,12 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ThemeProvider>
+        <NextThemesProvider
+      attribute="class"   // imposta class="dark" o class="light" su <html>
+      defaultTheme="system"
+      enableSystem
+      disableTransitionOnChange
+    >
           <CategoriesProvider>
             {showSidebar ? (
               <SidebarProvider>
@@ -72,7 +77,7 @@ export default function RootLayout({ children }) {
             )}
             <Toaster />
           </CategoriesProvider>
-        </ThemeProvider>
+        </NextThemesProvider>
       </body>
     </html>
   );
