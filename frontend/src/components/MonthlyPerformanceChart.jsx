@@ -28,22 +28,18 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-// Questo componente prende in ingresso il simbolo su cui mostrare i dati
 export function MonthlyPerformanceChart({ symbol }) {
   const [chartData, setChartData] = useState([]);
   const [trend, setTrend] = useState({ direction: "up", percent: 0 });
   const [error, setError] = useState(null);
 
-  // ATTENZIONE: in produzione non tenere la chiave sul client!
-  const ALPHA_VANTAGE_API_KEY = "REMOVED"; // Sostituisci con la tua vera API Key
+  const ALPHA_VANTAGE_API_KEY = "REMOVED";
 
   useEffect(() => {
     if (!symbol) return; // se non abbiamo un simbolo, niente chiamata
 
-    // Se il simbolo è tipo "NASDAQ:MSFT", rimuoviamo il prefisso
     const alphaSymbol = symbol.split(":").pop();
 
-    // Costruiamo la URL per TIME_SERIES_MONTHLY_ADJUSTED
     const url = `https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY_ADJUSTED&symbol=${alphaSymbol}&apikey=${ALPHA_VANTAGE_API_KEY}`;
 
     fetch(url)
@@ -98,7 +94,6 @@ export function MonthlyPerformanceChart({ symbol }) {
       });
   }, [symbol, ALPHA_VANTAGE_API_KEY]);
 
-  // Configurazione per il ChartContainer
   const chartConfig = {
     close: {
       label: "Monthly Close",
@@ -107,37 +102,39 @@ export function MonthlyPerformanceChart({ symbol }) {
   };
 
   return (
-    <Card>
+    <Card className="w-full max-w-lg mx-auto"> {/* Larghezza massima aumentata */}
       <CardHeader>
-        <CardTitle>Monthly Performance</CardTitle>
-        <CardDescription>Last 12 months</CardDescription>
+        <CardTitle className="text-lg">Monthly Performance</CardTitle> {/* Testo più piccolo */}
+        <CardDescription className="text-sm">Last 12 months</CardDescription>
       </CardHeader>
       <CardContent>
         {error && <p className="text-red-600">{error}</p>}
-
-        <ChartContainer config={chartConfig} className="min-h-[200px]">
-          <BarChart data={chartData} margin={{ top: 20 }} width={500} height={300}>
+  
+        <ChartContainer config={chartConfig} className="min-w-[200px]"> {/* Altezza minima adeguata */}
+          <BarChart data={chartData} width={1000} height={250} margin={{ top: 20, bottom: 10 }}> {/* Grafico più largo */}
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="month"
               tickLine={false}
               tickMargin={10}
               axisLine={false}
+              fontSize={12}
             />
             <YAxis
               domain={["auto", "auto"]}
               tickLine={false}
               axisLine={false}
               tickFormatter={(value) => value.toFixed(2)}
+              fontSize={12} 
             />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
             />
-            <Bar dataKey="close" fill="var(--color-close)" radius={8}>
+            <Bar dataKey="close" fill="var(--color-close)" radius={6}> {/* Raggio leggermente aumentato */}
               <LabelList
                 position="top"
-                offset={12}
+                offset={10}
                 className="fill-foreground"
                 fontSize={12}
               />
@@ -148,11 +145,11 @@ export function MonthlyPerformanceChart({ symbol }) {
       <CardFooter className="flex-col items-start gap-2 text-sm">
         {trend.direction === "up" ? (
           <div className="flex gap-2 font-medium leading-none text-green-600">
-            Trending up by {trend.percent}% <TrendingUp className="h-4 w-4" />
+            Trending up by {trend.percent}% <TrendingUp className="h-4 w-4" /> {/* Icona regolata */}
           </div>
         ) : (
           <div className="flex gap-2 font-medium leading-none text-red-600">
-            Trending down by {trend.percent}% <TrendingDown className="h-4 w-4" />
+            Trending down by {trend.percent}% <TrendingDown className="h-4 w-4" /> {/* Icona regolata */}
           </div>
         )}
         <div className="leading-none text-muted-foreground">
@@ -161,4 +158,6 @@ export function MonthlyPerformanceChart({ symbol }) {
       </CardFooter>
     </Card>
   );
+  
+  
 }

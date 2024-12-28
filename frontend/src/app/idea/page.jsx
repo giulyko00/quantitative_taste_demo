@@ -14,15 +14,10 @@ export default function Idea() {
   const searchParams = useSearchParams();
   const categoryId = searchParams.get("category");
   const ideaId = searchParams.get("idea");
-
-  // Stati per la fetch di "ideaDetails"
   const [ideaDetails, setIdeaDetails] = useState(null);
-
-  // Stati per la fetch di dati finanziari
   const [financialData, setFinancialData] = useState(null);
   const [error, setError] = useState(null);
 
-  // La tua API key di Alpha Vantage (occhio a non tenerla in chiaro in produzione!)
   const ALPHA_VANTAGE_API_KEY = "REMOVED";
 
   const router = useRouter();
@@ -69,7 +64,7 @@ export default function Idea() {
     }
   }, [categoryId, ideaId, router, setMessage]);
 
-  // 2. Quando ideaDetails è disponibile, chiama Alpha Vantage per i dati finanziari
+  // 2. Quando ideaDetails è disponibile, chiama Alpha Vantage per i dati
   useEffect(() => {
     if (!ideaDetails?.symbol) return;
 
@@ -164,7 +159,7 @@ export default function Idea() {
             </div>
           )}
 
-          {/* In caso di errori, li mostriamo */}
+          {/* messaggio di errore */}
           {error && (
             <div className="absolute top-4 right-4 bg-red-100 dark:bg-red-800 p-3 rounded shadow-sm">
               <p className="text-sm text-red-600 dark:text-red-200">
@@ -203,11 +198,13 @@ export default function Idea() {
             snippet="In questo articolo scoprirai alcuni dettagli sulla strategia e i principali indicatori da tenere d'occhio..."
             image="https://picsum.photos/200"
           />
+
+          {/* componente Tradingview */}
           <div className="mt-6">
             <TradingViewWidget symbol={ideaDetails.symbol} theme={theme} />
           </div>
 
-          {/* Aggiungi il tuo nuovo componente di performance mensile */}
+          {/* componente di performance mensile */}
           <div className="mt-6">
             <MonthlyPerformanceChart symbol={ideaDetails.symbol} />
           </div>

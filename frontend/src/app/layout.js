@@ -13,9 +13,8 @@ import {
 } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { Separator } from "@/components/ui/separator";
-import { LogoutButton } from "@/components/logout-button"; // Importa LogoutButton
-import { CategoriesProvider } from "@/context/CategoriesContext"; // Importa il CategoriesProvider
-
+import { LogoutButton } from "@/components/logout-button";
+import { CategoriesProvider } from "@/context/CategoriesContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -46,33 +45,32 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider>
-        <CategoriesProvider> 
-          {showSidebar ? (
-            <SidebarProvider>
-              {/* Sidebar principale */}
-              <AppSidebar />
-              {/* Sidebar con header e contenuto principale */}
-              <SidebarInset>
-                <header className="flex h-16 shrink-0 items-center justify-between border-b px-4 ">
+          <CategoriesProvider>
+            {showSidebar ? (
+              <SidebarProvider>
+                {/* Sidebar principale */}
+                <AppSidebar />
+                {/* Sidebar con header e contenuto principale */}
+                <SidebarInset>
+                  <header className="flex h-16 shrink-0 items-center justify-between border-b px-4 ">
+                    <SidebarTrigger className="-ml-1" />
+                    <Separator orientation="vertical" className="mr-2 h-4" />
 
-                  {/* Separator */}
-                  <Separator orientation="vertical" className="h-6 bg-gray-600 mx-4" />
-
-                  {/* Pulsanti Logout e ThemeToggle */}
-                  <div className="flex items-center space-x-4">
-                    <ThemeToggle />
-                    <LogoutButton />
-                  </div>
-                </header>
-                <main className="p-6 md:p-10">{children}</main>
-              </SidebarInset>
-            </SidebarProvider>
-          ) : (
-            <main className="flex min-h-screen items-center justify-center">
-              {children}
-            </main>
-          )}
-          <Toaster />
+                    {/* Pulsanti Logout e ThemeToggle */}
+                    <div className="flex items-center space-x-4">
+                      <ThemeToggle />
+                      <LogoutButton />
+                    </div>
+                  </header>
+                  <main className="p-6 md:p-10">{children}</main>
+                </SidebarInset>
+              </SidebarProvider>
+            ) : (
+              <main className="flex min-h-screen items-center justify-center">
+                {children}
+              </main>
+            )}
+            <Toaster />
           </CategoriesProvider>
         </ThemeProvider>
       </body>

@@ -1,4 +1,3 @@
-// frontend/app/dashboard/page.jsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -14,7 +13,7 @@ export default function Dashboard() {
     const token = localStorage.getItem("access_token");
     if (!token) {
       // Se non c'è token, reindirizza al login
-      router.push("/"); // Assicurati che il percorso sia corretto
+      router.push("/");
       return;
     }
 

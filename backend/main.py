@@ -9,7 +9,7 @@ import jwt
 
 
 # Configura il database
-DATABASE_URL = "sqlite:///./test.db"  # Usa SQLite per semplicità
+DATABASE_URL = "sqlite:///./test.db"
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
@@ -32,7 +32,6 @@ def get_db():
     finally:
         db.close()
 
-# App FastAPI
 app = FastAPI()
 
 app.add_middleware(
@@ -372,23 +371,6 @@ def read_root():
 def get_categories() -> List[str]:
     return categories_data
 
-@app.get("/ideas/{category}")
-def get_ideas_by_category(category: str) -> List[Dict]:
-    def slugify(text):
-        return text.lower().replace(" ", "-")
-    
-    # Normalizza la categoria richiesta
-    slugified_category = slugify(category)
-
-    # Normalizza le categorie nel backend
-    backend_categories = {slugify(cat): cat for cat in ideas_data.keys()}
-
-    if slugified_category not in backend_categories:
-        raise HTTPException(status_code=404, detail="Categoria non trovata.")
-    
-    original_category = backend_categories[slugified_category]
-    return ideas_data[original_category]
-
 @app.get("/categories-with-ideas")
 def get_categories_with_ideas() -> List[Dict]:
     """
@@ -411,9 +393,6 @@ def get_categories_with_ideas() -> List[Dict]:
         }
         for category_id, ideas in ideas_data.items()
     ]
-
-
-# Aggiungi questo endpoint al tuo main.py
 
 @app.get("/ideas/{category_id}/{idea_id}")
 def get_idea_detail(category_id: int, idea_id: int) -> Dict:

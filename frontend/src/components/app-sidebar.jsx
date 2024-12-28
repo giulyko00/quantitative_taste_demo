@@ -29,7 +29,6 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import { slugify } from "@/lib/slugify"; // Importa la funzione slugify
 
 const icons = {
   Bot,
@@ -41,7 +40,7 @@ const icons = {
 
 const getIconComponent = (iconName) => icons[iconName] || icons["BookOpen"];
 
-// This is sample data.
+// sample data.
 const data = {
   user: {
     name: "shadcn",
@@ -175,18 +174,8 @@ export function AppSidebar({ ...props }) {
   const router = useRouter();
   const [user, setUser] = useState({ name: "", email: "" });
 
-  const [categories, setCategories] = useState([]);
-  const [ideas, setIdeas] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(null);
   const [navMain, setNavMain] = useState([]);
-  const handleIdeaSelection = (idea, category) => {
-    const slugify = (text) =>
-      text.toLowerCase().replace(/ /g, "-").replace(/[^\w-]+/g, "");
-        router.push(`/page?selectedIdea=${slugify(idea.name)}&category=${slugify(category)}`);
-  };
   
-  
-  // Caricamento delle categorie
   useEffect(() => {
     const token = localStorage.getItem("access_token");
     if (!token) return;
@@ -221,10 +210,9 @@ export function AppSidebar({ ...props }) {
         return response.json();
       })
       .then((data) => {
-        // Mappa i dati ricevuti
         const formattedNavMain = data.map((category) => ({
-          title: category.name, // Nome della categoria
-          icon: getIconComponent(category.icon), // Icona della categoria (usa solo l'icona)
+          title: category.name,
+          icon: getIconComponent(category.icon),
           items: category.items.map((idea, index) => ({
             title: `${index + 1} - ${idea.title}`, // Indice + Nome dell'idea
             url: `/idea?category=${category.id}&idea=${idea.id}`, // URL con ID numerici
@@ -246,7 +234,7 @@ export function AppSidebar({ ...props }) {
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={navMain}   onItemClick={(url) => router.push(url)} // Passa l'URL al router
+        <NavMain items={navMain}   onItemClick={(url) => router.push(url)}
         />
         <NavProjects projects={data.projects} />
       </SidebarContent>
