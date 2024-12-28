@@ -116,6 +116,7 @@ ideas_data = {
         {
             "id": 1,
             "name": "Google Inc. - GOOGL",
+            "symbol": "NASDAQ:GOOGL",
             "description": "Leader nell'AI con un focus sulla trasformazione aziendale.",
             "performance": "+5% nell'ultimo mese",
             "chartLink": "https://placeholder.com/chart/googl",
@@ -123,6 +124,7 @@ ideas_data = {
         {
             "id": 2,
             "name": "Microsoft Corporation - MSFT",
+            "symbol": "NASDAQ:MSFT",
             "description": "Impegnata nello sviluppo di AI conversazionale e cloud intelligente.",
             "performance": "+2% nell'ultimo mese",
             "chartLink": "https://placeholder.com/chart/msft",
@@ -130,6 +132,7 @@ ideas_data = {
         {
             "id": 3,
             "name": "NVIDIA - NVDA",
+            "symbol": "NASDAQ:NVDA",
             "description": "Specializzata in GPU e piattaforme AI per data center e gaming.",
             "performance": "+8% nell'ultimo mese",
             "chartLink": "https://placeholder.com/chart/nvda",
@@ -137,6 +140,7 @@ ideas_data = {
         {
             "id": 4,
             "name": "IBM - IBM",
+            "symbol": "NYSE:IBM",
             "description": "AI aziendale con Watson e soluzioni per enterprise.",
             "performance": "+1% nell'ultimo mese",
             "chartLink": "https://placeholder.com/chart/ibm",
@@ -144,6 +148,7 @@ ideas_data = {
         {
             "id": 5,
             "name": "Amazon - AMZN",
+            "symbol": "NASDAQ:AMZN",
             "description": "Tra i pionieri dell'AI con Alexa e servizi cloud AWS.",
             "performance": "+4% nell'ultimo mese",
             "chartLink": "https://placeholder.com/chart/amzn",
@@ -151,6 +156,7 @@ ideas_data = {
         {
             "id": 6,
             "name": "Baidu - BIDU",
+            "symbol": "NASDAQ:BIDU",
             "description": "AI cinese e motore di ricerca, innovazione in autonomous driving.",
             "performance": "+7% nell'ultimo mese",
             "chartLink": "https://placeholder.com/chart/bidu",
@@ -158,6 +164,7 @@ ideas_data = {
         {
             "id": 7,
             "name": "Apple Inc. - AAPL",
+            "symbol": "NASDAQ:AAPL",
             "description": "AI nei servizi Siri e integrazione hardware/software.",
             "performance": "+3.5% nell'ultimo mese",
             "chartLink": "https://placeholder.com/chart/aapl",
@@ -165,6 +172,7 @@ ideas_data = {
         {
             "id": 8,
             "name": "Adobe - ADBE",
+            "symbol": "NASDAQ:ADBE",
             "description": "AI per design e contenuti, basata su piattaforme creative cloud.",
             "performance": "+2.7% nell'ultimo mese",
             "chartLink": "https://placeholder.com/chart/adbe",
@@ -172,6 +180,7 @@ ideas_data = {
         {
             "id": 9,
             "name": "Palantir - PLTR",
+            "symbol": "NYSE:PLTR",
             "description": "Soluzioni di data analysis e AI per governi e grandi aziende.",
             "performance": "+6% nell'ultimo mese",
             "chartLink": "https://placeholder.com/chart/pltr",
@@ -179,6 +188,7 @@ ideas_data = {
         {
             "id": 10,
             "name": "Salesforce - CRM",
+            "symbol": "NYSE:CRM",
             "description": "AI per CRM e automazione dei processi di vendita e marketing.",
             "performance": "+5.5% nell'ultimo mese",
             "chartLink": "https://placeholder.com/chart/crm",
@@ -188,6 +198,7 @@ ideas_data = {
         {
             "id": 1,
             "name": "Tesla Inc. - TSLA",
+            "symbol": "NASDAQ:TSLA",
             "description": "Pioniere nel settore auto elettriche e solare.",
             "performance": "+3% nell'ultimo mese",
             "chartLink": "https://placeholder.com/chart/tsla",
@@ -195,6 +206,7 @@ ideas_data = {
         {
             "id": 2,
             "name": "Vestas Wind Systems - VWDRY",
+            "symbol": "OTC:VWDRY",
             "description": "Specializzata in soluzioni eoliche in tutto il mondo.",
             "performance": "+1.5% nell'ultimo mese",
             "chartLink": "https://placeholder.com/chart/vwdry",
@@ -202,6 +214,7 @@ ideas_data = {
         {
             "id": 3,
             "name": "NextEra Energy - NEE",
+            "symbol": "NYSE:NEE",
             "description": "Leader americano nelle rinnovabili, specialmente solare ed eolico.",
             "performance": "+2.3% nell'ultimo mese",
             "chartLink": "https://placeholder.com/chart/nee",
@@ -209,6 +222,7 @@ ideas_data = {
         {
             "id": 4,
             "name": "First Solar - FSLR",
+            "symbol": "NASDAQ:FSLR",
             "description": "Produce pannelli solari ad alta efficienza.",
             "performance": "+4% nell'ultimo mese",
             "chartLink": "https://placeholder.com/chart/fslr",
@@ -216,6 +230,7 @@ ideas_data = {
         {
             "id": 5,
             "name": "Enphase Energy - ENPH",
+            "symbol": "NASDAQ:ENPH",
             "description": "Microinverter e soluzioni energetiche smart.",
             "performance": "+5.2% nell'ultimo mese",
             "chartLink": "https://placeholder.com/chart/enph",
@@ -223,6 +238,7 @@ ideas_data = {
         {
             "id": 6,
             "name": "Ørsted - ORSTED",
+            "symbol": "CPH:ORSTED",
             "description": "Grandi impianti eolici offshore in Europa e nel mondo.",
             "performance": "+3.8% nell'ultimo mese",
             "chartLink": "https://placeholder.com/chart/orsted",
@@ -230,6 +246,7 @@ ideas_data = {
         {
             "id": 7,
             "name": "Brookfield Renewable Partners - BEP",
+            "symbol": "NYSE:BEP",
             "description": "Un portafoglio diversificato di energia idroelettrica e solare.",
             "performance": "+1.9% nell'ultimo mese",
             "chartLink": "https://placeholder.com/chart/bep",
@@ -237,6 +254,7 @@ ideas_data = {
         {
             "id": 8,
             "name": "Canadian Solar - CSIQ",
+            "symbol": "NASDAQ:CSIQ",
             "description": "Produzione di moduli solari e soluzioni di stoccaggio.",
             "performance": "+2.5% nell'ultimo mese",
             "chartLink": "https://placeholder.com/chart/csiq",
@@ -244,6 +262,7 @@ ideas_data = {
         {
             "id": 9,
             "name": "SunPower - SPWR",
+            "symbol": "NASDAQ:SPWR",
             "description": "Fornisce soluzioni solari residenziali e commerciali.",
             "performance": "+2.1% nell'ultimo mese",
             "chartLink": "https://placeholder.com/chart/spwr",
@@ -251,6 +270,7 @@ ideas_data = {
         {
             "id": 10,
             "name": "Plug Power - PLUG",
+            "symbol": "NASDAQ:PLUG",
             "description": "Focus sull'idrogeno verde e celle a combustibile.",
             "performance": "+4.4% nell'ultimo mese",
             "chartLink": "https://placeholder.com/chart/plug",
@@ -260,6 +280,7 @@ ideas_data = {
         {
             "id": 1,
             "name": "Coinbase Global - COIN",
+            "symbol": "NASDAQ:COIN",
             "description": "Piattaforma di scambio crypto leader negli Stati Uniti.",
             "performance": "+10% nell'ultimo mese",
             "chartLink": "https://placeholder.com/chart/coin",
@@ -267,6 +288,7 @@ ideas_data = {
         {
             "id": 2,
             "name": "MicroStrategy - MSTR",
+            "symbol": "NASDAQ:MSTR",
             "description": "Ha investito massicciamente in Bitcoin come riserva di valore.",
             "performance": "+6% nell'ultimo mese",
             "chartLink": "https://placeholder.com/chart/mstr",
@@ -274,6 +296,7 @@ ideas_data = {
         {
             "id": 3,
             "name": "Riot Platforms - RIOT",
+            "symbol": "NASDAQ:RIOT",
             "description": "Mining di Bitcoin su larga scala.",
             "performance": "+8.5% nell'ultimo mese",
             "chartLink": "https://placeholder.com/chart/riot",
@@ -281,6 +304,7 @@ ideas_data = {
         {
             "id": 4,
             "name": "Marathon Digital Holdings - MARA",
+            "symbol": "NASDAQ:MARA",
             "description": "Una delle più grandi operazioni di mining di Bitcoin.",
             "performance": "+9% nell'ultimo mese",
             "chartLink": "https://placeholder.com/chart/mara",
@@ -288,6 +312,7 @@ ideas_data = {
         {
             "id": 5,
             "name": "Hive Blockchain - HIVE",
+            "symbol": "CVE:HIVE",
             "description": "Mining di criptovalute con focus su energia green.",
             "performance": "+7% nell'ultimo mese",
             "chartLink": "https://placeholder.com/chart/hive",
@@ -295,6 +320,7 @@ ideas_data = {
         {
             "id": 6,
             "name": "Hut 8 Mining - HUT",
+            "symbol": "TSE:HUT",
             "description": "Azienda canadese di mining con focus su sostenibilità.",
             "performance": "+5.5% nell'ultimo mese",
             "chartLink": "https://placeholder.com/chart/hut",
@@ -302,6 +328,7 @@ ideas_data = {
         {
             "id": 7,
             "name": "Bitfarms - BITF",
+            "symbol": "NASDAQ:BITF",
             "description": "Mining globale di Bitcoin, con operazioni in Nord e Sud America.",
             "performance": "+4.2% nell'ultimo mese",
             "chartLink": "https://placeholder.com/chart/bitf",
@@ -309,6 +336,7 @@ ideas_data = {
         {
             "id": 8,
             "name": "Block Inc. (ex Square) - SQ",
+            "symbol": "NYSE:SQ",
             "description": "Servizi di pagamento con integrazioni crypto.",
             "performance": "+3% nell'ultimo mese",
             "chartLink": "https://placeholder.com/chart/sq",
@@ -316,6 +344,7 @@ ideas_data = {
         {
             "id": 9,
             "name": "Galaxy Digital - GLXY",
+            "symbol": "TSE:GLXY",
             "description": "Società di gestione fondi incentrata su criptovalute e blockchain.",
             "performance": "+6.7% nell'ultimo mese",
             "chartLink": "https://placeholder.com/chart/glxy",
@@ -323,6 +352,7 @@ ideas_data = {
         {
             "id": 10,
             "name": "PayPal Holdings - PYPL",
+            "symbol": "NASDAQ:PYPL",
             "description": "Offre servizi di pagamento e supporto per transazioni in criptovalute.",
             "performance": "+1.8% nell'ultimo mese",
             "chartLink": "https://placeholder.com/chart/pypl",

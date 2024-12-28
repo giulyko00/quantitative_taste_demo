@@ -73,7 +73,7 @@ export default function Idea() {
           <p>
             <strong>Performance:</strong> {ideaDetails.performance}
           </p>
-          <TradingViewWidget symbol={"NASDAQ:GOOGL"} theme={theme}  />
+          <TradingViewWidget symbol={ideaDetails.symbol} theme={theme} />
           <a
             href={ideaDetails.chartLink}
             target="_blank"
