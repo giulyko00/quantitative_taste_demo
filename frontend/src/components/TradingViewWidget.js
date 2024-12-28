@@ -20,6 +20,7 @@ export default function TradingViewWidget({ symbol = "NASDAQ:GOOGL", theme }) {
           symbol: symbol,
           container_id: containerRef.current.id,
           autosize: true,
+          interval: "D",
           theme: theme, // Usa il tema passato come prop
           style: "1",
           locale: "it",
