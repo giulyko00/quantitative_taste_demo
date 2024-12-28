@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import TradingViewWidget from "@/components/TradingViewWidget";
 import { MonthlyPerformanceChart } from "@/components/MonthlyPerformanceChart";
-
+import { ArticlePreviewCard } from "@/components/ArticlePreviewCard";
 import { useCategories } from "@/context/CategoriesContext";
 import { useTheme } from "@/components/theme-provider";
 
@@ -188,9 +188,6 @@ export default function Idea() {
             </strong>{" "}
             {ideaDetails.performance}
           </p>
-          <div className="mt-6">
-            <TradingViewWidget symbol={ideaDetails.symbol} theme={theme} />
-          </div>
           <a
             href={ideaDetails.chartLink}
             target="_blank"
@@ -200,10 +197,20 @@ export default function Idea() {
           >
             Vedi grafico completo
           </a>
+          <ArticlePreviewCard
+            url="https://example.com/articolo-approfondimento"
+            title="Approfondimento sulla strategia di investimento"
+            snippet="In questo articolo scoprirai alcuni dettagli sulla strategia e i principali indicatori da tenere d'occhio..."
+            image="https://picsum.photos/200"
+          />
+          <div className="mt-6">
+            <TradingViewWidget symbol={ideaDetails.symbol} theme={theme} />
+          </div>
+
           {/* Aggiungi il tuo nuovo componente di performance mensile */}
-<div className="mt-6">
-  <MonthlyPerformanceChart symbol={ideaDetails.symbol} />
-</div>
+          <div className="mt-6">
+            <MonthlyPerformanceChart symbol={ideaDetails.symbol} />
+          </div>
         </div>
       ) : (
         <div className="text-center text-gray-500 dark:text-gray-400">

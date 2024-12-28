@@ -115,7 +115,7 @@ export function MonthlyPerformanceChart({ symbol }) {
       <CardContent>
         {error && <p className="text-red-600">{error}</p>}
 
-        <ChartContainer config={chartConfig}>
+        <ChartContainer config={chartConfig} className="min-h-[200px]">
           <BarChart data={chartData} margin={{ top: 20 }} width={500} height={300}>
             <CartesianGrid vertical={false} />
             <XAxis
