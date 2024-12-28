@@ -2,22 +2,30 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import TradingViewWidget from "@/components/TradingViewWidget"; 
-import { LogoutButton } from "@/components/logout-button"; 
-import { useCategories } from "@/context/CategoriesContext"; 
+import TradingViewWidget from "@/components/TradingViewWidget";
+import { useCategories } from "@/context/CategoriesContext";
 import { useTheme } from "@/components/theme-provider";
 
 export default function Idea() {
-  const { theme } = useTheme(); // Ottieni il tema corrente dal contesto
+  const { theme } = useTheme();
   const { message, setMessage } = useCategories();
   const searchParams = useSearchParams();
   const categoryId = searchParams.get("category");
   const ideaId = searchParams.get("idea");
 
+  // Stati per la fetch di "ideaDetails"
   const [ideaDetails, setIdeaDetails] = useState(null);
+
+  // Stati per la fetch di dati finanziari
+  const [financialData, setFinancialData] = useState(null);
+  const [error, setError] = useState(null);
+
+  // La tua API key di Alpha Vantage (occhio a non tenerla in chiaro in produzione!)
+  const ALPHA_VANTAGE_API_KEY = "REMOVED";
 
   const router = useRouter();
 
+  // 1. Carica i dettagli dell'idea + verifica token
   useEffect(() => {
     const token = localStorage.getItem("access_token");
     if (!token) {
@@ -25,6 +33,7 @@ export default function Idea() {
       return;
     }
 
+    // Verifica validità del token
     fetch("http://127.0.0.1:8000/protected", {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -44,6 +53,7 @@ export default function Idea() {
         router.push("/");
       });
 
+    // Carica i dettagli dell'idea
     if (categoryId && ideaId) {
       fetch(`http://127.0.0.1:8000/ideas/${categoryId}/${ideaId}`)
         .then((res) => {
@@ -55,20 +65,102 @@ export default function Idea() {
         .then((data) => setIdeaDetails(data))
         .catch((err) => console.error(err));
     }
-  }, [categoryId, ideaId]);
+  }, [categoryId, ideaId, router, setMessage]);
+
+  // 2. Quando ideaDetails è disponibile, chiama Alpha Vantage per i dati finanziari
+  useEffect(() => {
+    // Se non c'è un simbolo da caricare, fermati
+    if (!ideaDetails?.symbol) return;
+  
+    // Esempio di rimozione prefisso con split:
+    const alphaSymbol = ideaDetails.symbol.split(":").pop(); 
+  
+    const fetchStockData = async () => {
+      try {
+        const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${alphaSymbol}&apikey=${ALPHA_VANTAGE_API_KEY}`;
+        const res = await fetch(url);
+        if (!res.ok) {
+          throw new Error("Errore nella chiamata a Alpha Vantage");
+        }
+        const data = await res.json();
+        const globalQuote = data["Global Quote"];
+        if (!globalQuote) {
+          throw new Error("Dati non trovati per questo simbolo");
+        }
+  
+        const price = globalQuote["05. price"];
+        const changePercent = globalQuote["10. change percent"];
+  
+        setFinancialData({ price, changePercent });
+        setError(null);
+      } catch (err) {
+        console.error(err);
+        setError(err.message);
+        setFinancialData(null);
+      }
+    };
+  
+    fetchStockData();
+  }, [ideaDetails, ALPHA_VANTAGE_API_KEY]);
+  
 
   return (
-    <main className=" space-y-8">
-      <h1 className="text-2xl font-bold ">Investing Ideas</h1>
+    <main className="space-y-8">
+      <h1
+        className="text-3xl font-bold border-b pb-2 
+                   text-gray-800 dark:text-gray-200 
+                   border-gray-300 dark:border-gray-700"
+      >
+        Investing Ideas
+      </h1>
 
       {ideaDetails ? (
-        <div className="border p-6 rounded-md shadow-md  space-y-6">
-          <h2 className="text-xl font-semibold ">{ideaDetails.name}</h2>
-          <p className="">
-            <strong className="font-semibold ">Descrizione:</strong> {ideaDetails.description}
+        <div
+          className="relative border p-6 rounded-md shadow-md space-y-6 
+                     bg-white dark:bg-gray-900 
+                     border-gray-300 dark:border-gray-700"
+        >
+          {/* BOX IN ALTO A DESTRA PER I DATI FINANZIARI */}
+          {financialData && (
+            <div className="absolute top-4 right-4 bg-gray-100 dark:bg-gray-800 p-3 rounded shadow-sm">
+              <p className="text-sm text-gray-700 dark:text-gray-300">
+                <strong>Prezzo:</strong> {financialData.price} USD
+              </p>
+              <p
+                className={`text-sm ${
+                  financialData.changePercent?.startsWith("-")
+                    ? "text-red-600 dark:text-red-400"
+                    : "text-green-600 dark:text-green-400"
+                }`}
+              >
+                <strong>Variazione:</strong> {financialData.changePercent}
+              </p>
+            </div>
+          )}
+
+          {/* In caso di errori, li mostriamo */}
+          {error && (
+            <div className="absolute top-4 right-4 bg-red-100 dark:bg-red-800 p-3 rounded shadow-sm">
+              <p className="text-sm text-red-600 dark:text-red-200">
+                <strong>Errore:</strong> {error}
+              </p>
+            </div>
+          )}
+
+          <h2 className="text-2xl font-bold text-blue-700 dark:text-blue-400">
+            {ideaDetails.name}
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300">
+            <strong className="font-bold text-gray-900 dark:text-gray-100">
+              Descrizione:
+            </strong>{" "}
+            {ideaDetails.description}
           </p>
-          <p className="">
-            <strong className="font-semibold ">Performance:</strong> {ideaDetails.performance}
+          <p className="text-gray-700 dark:text-gray-300">
+            <strong className="font-bold text-gray-900 dark:text-gray-100">
+              Performance:
+            </strong>{" "}
+            {ideaDetails.performance}
           </p>
           <div className="mt-6">
             <TradingViewWidget symbol={ideaDetails.symbol} theme={theme} />
@@ -77,13 +169,14 @@ export default function Idea() {
             href={ideaDetails.chartLink}
             target="_blank"
             rel="noreferrer"
-            className="inline-block text-blue-600 hover:text-blue-800 underline mt-4"
+            className="inline-block text-blue-600 hover:text-blue-400 underline 
+                       dark:text-blue-500 dark:hover:text-blue-300 mt-4"
           >
             Vedi grafico completo
           </a>
         </div>
       ) : (
-        <div className="text-center ">
+        <div className="text-center text-gray-500 dark:text-gray-400">
           <p>Seleziona un'idea dalla sidebar per vedere i dettagli.</p>
         </div>
       )}
