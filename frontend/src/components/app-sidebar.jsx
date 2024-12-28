@@ -179,10 +179,12 @@ export function AppSidebar({ ...props }) {
   const [ideas, setIdeas] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [navMain, setNavMain] = useState([]);
-  const handleIdeaSelection = (idea) => {
-    // Usa il router per passare alla pagina dashboard con lo stato dell'idea
-    router.push(`/dashboard?selectedIdea=${encodeURIComponent(idea.title)}`);
+  const handleIdeaSelection = (idea, category) => {
+    const slugify = (text) =>
+      text.toLowerCase().replace(/ /g, "-").replace(/[^\w-]+/g, "");
+        router.push(`/page?selectedIdea=${slugify(idea.name)}&category=${slugify(category)}`);
   };
+  
   
   // Caricamento delle categorie
   useEffect(() => {
@@ -219,19 +221,22 @@ export function AppSidebar({ ...props }) {
         return response.json();
       })
       .then((data) => {
+        // Mappa i dati ricevuti
         const formattedNavMain = data.map((category) => ({
-          title: category.title,
-          icon: getIconComponent(category.icon),
-          items: category.items.map((item, index) => ({
-            title: `${index + 1} - ${item.title}`,
-            url: `/dashboard/${category.title}/${item.title}`, // Non codificare qui
+          title: category.name, // Nome della categoria
+          icon: getIconComponent(category.icon), // Icona della categoria (usa solo l'icona)
+          items: category.items.map((idea, index) => ({
+            title: `${index + 1} - ${idea.title}`, // Indice + Nome dell'idea
+            url: `/idea?category=${category.id}&idea=${idea.id}`, // URL con ID numerici
           })),
         }));
         
-  
+    
         setNavMain(formattedNavMain);
       })
       .catch((err) => console.error(err));
+    
+    
   }, []);
   
 
@@ -241,7 +246,8 @@ export function AppSidebar({ ...props }) {
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={navMain} />
+        <NavMain items={navMain}   onItemClick={(url) => router.push(url)} // Passa l'URL al router
+        />
         <NavProjects projects={data.projects} />
       </SidebarContent>
       <SidebarFooter>
