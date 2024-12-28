@@ -70,9 +70,9 @@ export default function Idea() {
   // 2. Quando ideaDetails è disponibile, chiama Alpha Vantage per i dati finanziari
   useEffect(() => {
     if (!ideaDetails?.symbol) return;
-  
-    const alphaSymbol = ideaDetails.symbol.split(":").pop(); 
-  
+
+    const alphaSymbol = ideaDetails.symbol.split(":").pop();
+
     const fetchStockData = async () => {
       try {
         const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${alphaSymbol}&apikey=${ALPHA_VANTAGE_API_KEY}`;
@@ -85,11 +85,11 @@ export default function Idea() {
         if (!globalQuote) {
           throw new Error("Dati non trovati per questo simbolo");
         }
-  
+
         const price = globalQuote["05. price"];
         const changePercent = globalQuote["10. change percent"];
         const volume = globalQuote["06. volume"];
-  
+
         setFinancialData({ price, changePercent, volume });
         setError(null);
       } catch (err) {
@@ -98,11 +98,9 @@ export default function Idea() {
         setFinancialData(null);
       }
     };
-  
+
     fetchStockData();
   }, [ideaDetails, ALPHA_VANTAGE_API_KEY]);
-  
-  
 
   return (
     <main className="space-y-8">
@@ -120,27 +118,49 @@ export default function Idea() {
                      bg-white dark:bg-gray-900 
                      border-gray-300 dark:border-gray-700"
         >
-{/* BOX IN ALTO A DESTRA PER I DATI FINANZIARI */}
-{financialData && (
-  <div className="absolute top-8 right-8 bg-gray-100 dark:bg-gray-800 p-8 rounded-xl shadow-lg w-80 space-y-4">
-    <p className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-      <strong>Prezzo:</strong> {financialData.price} USD
-    </p>
-    <p
-      className={`text-lg font-semibold ${
-        financialData.changePercent?.startsWith("-")
-          ? "text-red-600 dark:text-red-400"
-          : "text-green-600 dark:text-green-400"
-      }`}
-    >
-      <strong>Variazione:</strong> {financialData.changePercent}
-    </p>
-    <p className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-      <strong>Volume:</strong> {financialData.volume}
-    </p>
-  </div>
-)}
-
+          {/* BOX IN ALTO A DESTRA PER I DATI FINANZIARI */}
+          {financialData && (
+            <div
+              className="absolute top-8 right-8 bg-gray-100 dark:bg-gray-800 
+               p-4 rounded-lg shadow-md w-72 border 
+               border-gray-300 dark:border-gray-700 space-y-3 z-50"
+            >
+              <div className="flex justify-between items-center border-b pb-2 border-gray-300 dark:border-gray-700">
+                <h3 className="text-lg font-bold text-gray-800 dark:text-gray-200">
+                  Dati Finanziari
+                </h3>
+                <span className="text-sm text-gray-500 dark:text-gray-400">
+                  {ideaDetails.symbol}
+                </span>
+              </div>
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-gray-800 dark:text-gray-200">
+                  <strong className="font-bold text-gray-900 dark:text-gray-100">
+                    Prezzo:
+                  </strong>{" "}
+                  {financialData.price} USD
+                </p>
+                <p
+                  className={`text-sm font-medium ${
+                    financialData.changePercent?.startsWith("-")
+                      ? "text-red-600 dark:text-red-400"
+                      : "text-green-600 dark:text-green-400"
+                  }`}
+                >
+                  <strong className="font-bold text-gray-900 dark:text-gray-100">
+                    Variazione:
+                  </strong>{" "}
+                  {financialData.changePercent}
+                </p>
+                <p className="text-sm font-medium text-gray-800 dark:text-gray-200">
+                  <strong className="font-bold text-gray-900 dark:text-gray-100">
+                    Volume:
+                  </strong>{" "}
+                  {financialData.volume}
+                </p>
+              </div>
+            </div>
+          )}
 
           {/* In caso di errori, li mostriamo */}
           {error && (
