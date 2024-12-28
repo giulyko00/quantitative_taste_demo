@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import TradingViewWidget from "@/components/TradingViewWidget";
+import { MonthlyPerformanceChart } from "@/components/MonthlyPerformanceChart";
+
 import { useCategories } from "@/context/CategoriesContext";
 import { useTheme } from "@/components/theme-provider";
 
@@ -198,6 +200,10 @@ export default function Idea() {
           >
             Vedi grafico completo
           </a>
+          {/* Aggiungi il tuo nuovo componente di performance mensile */}
+<div className="mt-6">
+  <MonthlyPerformanceChart symbol={ideaDetails.symbol} />
+</div>
         </div>
       ) : (
         <div className="text-center text-gray-500 dark:text-gray-400">
