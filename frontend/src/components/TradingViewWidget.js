@@ -1,26 +1,26 @@
 "use client";
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef } from "react";
 
-export default function TradingViewWidget({ symbol = "NASDAQ:GOOGL" }) {
+export default function TradingViewWidget({ symbol = "NASDAQ:GOOGL", theme }) {
   const containerRef = useRef(null);
 
   useEffect(() => {
     if (!containerRef.current) return;
 
-    // Creiamo uno script element
+    // Pulisce il contenuto del container per evitare duplicazioni
+    containerRef.current.innerHTML = "";
+
     const script = document.createElement("script");
     script.src = "https://s3.tradingview.com/tv.js";
     script.async = true;
 
     script.onload = () => {
-      // Quando lo script è caricato, creiamo il widget
       if (window.TradingView) {
         new window.TradingView.widget({
           symbol: symbol,
-          // Esempio: "NASDAQ:GOOGL"
           container_id: containerRef.current.id,
           autosize: true,
-          theme: "light",
+          theme: theme, // Usa il tema passato come prop
           style: "1",
           locale: "it",
         });
@@ -28,9 +28,15 @@ export default function TradingViewWidget({ symbol = "NASDAQ:GOOGL" }) {
     };
 
     containerRef.current.appendChild(script);
-  }, [symbol]);
 
-  // Ritorniamo un container dove TradingView monterà il widget
+    // Cleanup per evitare problemi di duplicazione
+    return () => {
+      if (containerRef.current) {
+        containerRef.current.innerHTML = "";
+      }
+    };
+  }, [symbol, theme]); // Dipendenza su symbol e theme
+
   return (
     <div 
       id="tradingview_widget" 

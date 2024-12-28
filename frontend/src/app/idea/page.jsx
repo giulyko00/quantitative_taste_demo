@@ -5,8 +5,11 @@ import { useRouter, useSearchParams } from "next/navigation";
 import TradingViewWidget from "@/components/TradingViewWidget"; 
 import { LogoutButton } from "@/components/logout-button"; 
 import { useCategories } from "@/context/CategoriesContext"; 
+import { useTheme } from "@/components/theme-provider";
+
 
 export default function Idea() {
+  const { theme, toggleTheme } = useTheme(); // Ottieni il tema corrente dal contesto
   const { message, setMessage } = useCategories();
   const searchParams = useSearchParams();
   const categoryId = searchParams.get("category");
@@ -61,14 +64,8 @@ export default function Idea() {
     <main className="p-8">
       <h1 className="text-2xl font-bold mb-4">Investing Ideas Idea</h1>
 
-      {message && (
-        <div className="mb-6 p-4 bg-green-100 text-green-800 rounded-md">
-          {message}
-        </div>
-      )}
-
       {ideaDetails ? (
-        <div className="mt-8 border p-4 rounded-md bg-white shadow">
+        <div className="mt-8 border p-4 rounded-md ">
           <h3 className="text-xl font-bold mb-4">{ideaDetails.name}</h3>
           <p>
             <strong>Descrizione:</strong> {ideaDetails.description}
@@ -76,7 +73,7 @@ export default function Idea() {
           <p>
             <strong>Performance:</strong> {ideaDetails.performance}
           </p>
-          <TradingViewWidget symbol={"NASDAQ:GOOGL"} />
+          <TradingViewWidget symbol={"NASDAQ:GOOGL"} theme={theme}  />
           <a
             href={ideaDetails.chartLink}
             target="_blank"
@@ -89,8 +86,6 @@ export default function Idea() {
       ) : (
         <p className="text-gray-500">Seleziona un'idea dalla sidebar per vedere i dettagli.</p>
       )}
-
-      <LogoutButton />
     </main>
   );
 }
