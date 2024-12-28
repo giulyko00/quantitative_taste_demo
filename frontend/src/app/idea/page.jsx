@@ -22,7 +22,7 @@ export default function Dashboard() {
   useEffect(() => {
     const token = localStorage.getItem("access_token");
     if (!token) {
-      router.push("/login");
+      router.push("/");
       return;
     }
 
@@ -42,26 +42,9 @@ export default function Dashboard() {
       })
       .catch((err) => {
         console.error(err);
-        router.push("/login");
+        router.push("/");
       });
   }, [router, setMessage]);
-
-  const fetchIdeaDetails = async (category, ideaName) => {
-    try {
-      const response = await fetch(`http://127.0.0.1:8000/ideas/${category}/${ideaName}`);
-      if (!response.ok) throw new Error("Idea non trovata");
-      const data = await response.json();
-      setIdeaDetails(data);
-    } catch (error) {
-      console.error(error);
-      setIdeaDetails(null);
-    }
-  };
-
-  const handleIdeaClick = (idea) => {
-    setSelectedIdea(idea.name);
-    fetchIdeaDetails(selectedCategory, idea.name.toLowerCase().replace(/[\s.,]/g, "-"));
-  };
 
   return (
     <main className="p-8">
