@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { LogoutButton } from "@/components/logout-button";
 
 export default function Dashboard() {
   const router = useRouter();

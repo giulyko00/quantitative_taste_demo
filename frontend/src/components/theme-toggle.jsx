@@ -1,9 +1,8 @@
-// components/theme-toggle.jsx
 "use client";
 
 import { useTheme } from "next-themes"
 import { Button } from "@/components/ui/button";
-import { Sun, Moon } from "lucide-react"; // Utilizza icone per indicare il tema
+import { Sun, Moon } from "lucide-react";
 
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
