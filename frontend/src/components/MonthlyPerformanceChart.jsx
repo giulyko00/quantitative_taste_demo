@@ -102,39 +102,37 @@ export function MonthlyPerformanceChart({ symbol }) {
   };
 
   return (
-    <Card className="w-full max-w-lg mx-auto"> {/* Larghezza massima aumentata */}
+    <Card>
       <CardHeader>
-        <CardTitle className="text-lg">Monthly Performance</CardTitle> {/* Testo più piccolo */}
-        <CardDescription className="text-sm">Last 12 months</CardDescription>
+        <CardTitle>Monthly Performance</CardTitle>
+        <CardDescription>Last 12 months</CardDescription>
       </CardHeader>
       <CardContent>
         {error && <p className="text-red-600">{error}</p>}
-  
-        <ChartContainer config={chartConfig} className="min-w-[200px]"> {/* Altezza minima adeguata */}
-          <BarChart data={chartData} width={1000} height={250} margin={{ top: 20, bottom: 10 }}> {/* Grafico più largo */}
+
+        <ChartContainer config={chartConfig} className="min-h-[200px]">
+          <BarChart data={chartData} margin={{ top: 20 }} width={500} height={300}>
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="month"
               tickLine={false}
               tickMargin={10}
               axisLine={false}
-              fontSize={12}
             />
             <YAxis
               domain={["auto", "auto"]}
               tickLine={false}
               axisLine={false}
               tickFormatter={(value) => value.toFixed(2)}
-              fontSize={12} 
             />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
             />
-            <Bar dataKey="close" fill="var(--color-close)" radius={6}> {/* Raggio leggermente aumentato */}
+            <Bar dataKey="close" fill="var(--color-close)" radius={8}>
               <LabelList
                 position="top"
-                offset={10}
+                offset={12}
                 className="fill-foreground"
                 fontSize={12}
               />
@@ -145,11 +143,11 @@ export function MonthlyPerformanceChart({ symbol }) {
       <CardFooter className="flex-col items-start gap-2 text-sm">
         {trend.direction === "up" ? (
           <div className="flex gap-2 font-medium leading-none text-green-600">
-            Trending up by {trend.percent}% <TrendingUp className="h-4 w-4" /> {/* Icona regolata */}
+            Trending up by {trend.percent}% <TrendingUp className="h-4 w-4" />
           </div>
         ) : (
           <div className="flex gap-2 font-medium leading-none text-red-600">
-            Trending down by {trend.percent}% <TrendingDown className="h-4 w-4" /> {/* Icona regolata */}
+            Trending down by {trend.percent}% <TrendingDown className="h-4 w-4" />
           </div>
         )}
         <div className="leading-none text-muted-foreground">
@@ -158,6 +156,4 @@ export function MonthlyPerformanceChart({ symbol }) {
       </CardFooter>
     </Card>
   );
-  
-  
 }
